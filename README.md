@@ -43,3 +43,9 @@ git push origin v1.0.0
 
 Actions tab > **Rollback** > Run workflow > enter the previous version (e.g. `v1.0.0`).
 Or locally: `IMAGE_REPO=ghcr.io/<user>/todo-app ./scripts/deploy.sh v1.0.0`
+
+## Architecture
+
+- `app`: application PHP (port 8000), routes `/health` et `/tasks`.
+- `db`: MySQL 8, accessible uniquement par le nom de service `db`, port non publié, données dans le volume `dbdata`.
+- CI: GitHub Actions teste le code puis construit l'image Docker à chaque pull request.
