@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpass-dev}
+      MYSQL_DATABASE: ${DB_NAME:-todo}
+      MYSQL_USER: ${DB_USER:-todo}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-todo-dev}
+    volumes:
+      - dbdata:/var/lib/mysql          # persistent volume
+    # no "ports:" here -> the database is NOT published to the host
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    image: ${APP_IMAGE:-todo-app:local}
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db                       # service name, not localhost
+      DB_NAME: ${DB_NAME:-todo}
+      DB_USER: ${DB_USER:-todo}
+      DB_PASSWORD: ${DB_PASSWORD:-todo-dev}
+      APP_VERSION: ${APP_VERSION:-dev}
+    depends_on:
+      db:
+        condition: service_healthy      # start only when DB is healthy
+
+volumes:
+  dbdata:
