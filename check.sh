@@ -1,7 +1,7 @@
 #!/bin/bash
 # Control script: exit 0 if everything is fine, non-zero otherwise.
 set -euo pipefail
-
+./scripts/check-project.sh
 echo "==> Installing dependencies"
 composer install --no-interaction --quiet
 
