@@ -42,7 +42,7 @@ git push origin v1.0.0
 ## Roll back
 
 Actions tab > **Rollback** > Run workflow > enter the previous version (e.g. `v1.0.0`).
-Or locally: `IMAGE_REPO=ghcr.io/<user>/todo-app ./scripts/deploy.sh v1.0.0`
+Or locally: `IMAGE_REPO=ghcr.io/med-slimen/todoapp_ci-cd ./scripts/deploy.sh v1.0.0`
 
 ## Architecture
 
