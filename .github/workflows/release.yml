@@ -33,6 +33,7 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.image }}:${{ github.ref_name }}
+          labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}
 
   deploy-test:
     name: Deploy to test environment + health check
