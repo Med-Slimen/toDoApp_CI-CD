@@ -8,6 +8,7 @@ class Tasks
         return [
             'status'  => 'ok',
             'version' => getenv('APP_VERSION') ?: 'dev',
+            'service' => 'todo-app',
         ];
     }
 
