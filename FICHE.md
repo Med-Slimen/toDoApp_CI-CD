@@ -21,21 +21,22 @@
 
 ## 2. Version mise en service
 
-- Version déployée: **v<X.Y.Z>**
-- Image: `ghcr.io/<user>/todo-app:v<X.Y.Z>` (published once, never rebuilt)
-- Vérification: `GET /health` returns `{"status":"ok","version":"v<X.Y.Z>"}`
-- Pipelines: succès https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45266744974 | échec https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45265592901
+- Version déployée: **v1.0.1** (puis retour à v1.0.0, voir section 3)
+- Image: `ghcr.io/med-slimen/todoapp_ci-cd:v1.0.1`, digest `sha256:096179de...`, publiée une seule fois et jamais reconstruite
+- Vérification: `GET /health` renvoie `{"status":"ok","version":"v1.0.1","service":"todo-app"}`
+- Mises en service: v1.0.0 https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45277625363 | v1.0.1 https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45280946677
+- Pipelines CI: succès https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45266744974 | échec https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45265592901
 
 ## 3. Déroulé du retour arrière
 
-1. State before: v<1.0.1> deployed (`/health` shows version v<1.0.1>).
-2. Trigger: Actions > Rollback > version `v<1.0.0>` (or `IMAGE_REPO=... ./scripts/deploy.sh v<1.0.0>`).
-3. The script pulls the existing image `:v<1.0.0>` (no rebuild) and runs `docker compose up -d --no-build`.
-4. Health check passes; `/health` now shows version v<1.0.0>.
+1. Avant: v1.0.1 en service (`/health` affiche la version v1.0.1 et le champ `service`).
+2. Déclenchement: Actions, workflow Rollback, version `v1.0.0` (https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45282140226).
+3. Le workflow tire l'image déjà publiée (digest `2a1e0da4...`, identique à la première livraison) et lance `docker compose up -d --no-build`: aucune reconstruction.
+4. Contrôle de santé OK: `/health` renvoie la version v1.0.0, sans le champ `service`.
 
 ## 4. Bonus réalisés
 
-- [ ] Protection de main (+1)
-- [x] Déploiement automatique sur tag (+2)
-- [x] Matrice de versions PHP 8.2 / 8.3 (+1)
+- **Protection de main (+1)**: ruleset exigeant une pull request et les trois contrôles (Tests PHP 8.2, Tests PHP 8.3, Build Docker image); une PR rouge ne peut pas être fusionnée.
+- **Déploiement automatique sur tag (+2)**: `release.yml` se déclenche sur un tag `vX.Y.Z`, publie l'image, la déploie en test, puis vérifie `/health`.
+- **Matrice de versions (+1)**: `ci.yml` exécute les tests sur PHP 8.2 et PHP 8.3 en parallèle (`fail-fast: false`). Résultat: les deux versions passent, ce qui garantit que le code marche sur la version minimale supportée (8.2, exigée par PHPUnit 11) et sur celle de l'image (8.3). Un échec limité à une seule version révélerait une incompatibilité entre versions.
 
