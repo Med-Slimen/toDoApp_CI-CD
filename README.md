@@ -59,3 +59,18 @@ Construire et lancer l'image seule (sans base de données):
     curl http://localhost:8000/health
 
 L'image respecte les bonnes pratiques: tag explicite (`php:8.3-cli-alpine`), utilisateur non root (`app`), `.dockerignore`, et `HEALTHCHECK` sur `/health`.
+
+## Docker Compose
+
+Application + base de données MySQL:
+
+    docker compose up --build -d
+    docker compose ps
+    curl http://localhost:8000/tasks
+
+- L'application contacte la base par le nom de service `db`.
+- Le port 3306 de la base n'est pas publié sur la machine.
+- Les données sont dans le volume nommé `dbdata` (elles survivent à `docker compose down`).
+- `app` démarre seulement quand `db` est `healthy`.
+
+Arrêter: `docker compose down` (garde les données). Tout effacer: `docker compose down -v`.
