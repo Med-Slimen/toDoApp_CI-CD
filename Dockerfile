@@ -16,6 +16,6 @@ USER app
 
 EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 \
-  CMD wget -qO- http://localhost:8000/health > /dev/null || exit 1
+  CMD wget -qO- http://127.0.0.1:8000/health > /dev/null || exit 1
 
 CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
