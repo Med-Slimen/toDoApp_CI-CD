@@ -16,6 +16,6 @@ class TasksTest extends TestCase
 
     public function testNormalTitleIsValid(): void
     {
-        $this->assertFalse(Tasks::isValidTitle('Buy milk'));
+        $this->assertTrue(Tasks::isValidTitle('Buy milk'));
     }
 }
