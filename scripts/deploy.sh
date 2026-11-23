@@ -10,6 +10,7 @@ export APP_VERSION="${VERSION}"
 
 echo "==> Deploying ${APP_IMAGE}"
 docker pull "${APP_IMAGE}"
+echo "==> Digest: $(docker inspect --format '{{index .RepoDigests 0}}' "${APP_IMAGE}")"
 docker compose up -d --no-build
 ./scripts/healthcheck.sh http://localhost:8000/health
 echo "==> Version ${VERSION} is live"

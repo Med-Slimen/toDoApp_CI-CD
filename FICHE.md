@@ -24,7 +24,7 @@
 - Version déployée: **v<X.Y.Z>**
 - Image: `ghcr.io/<user>/todo-app:v<X.Y.Z>` (published once, never rebuilt)
 - Vérification: `GET /health` returns `{"status":"ok","version":"v<X.Y.Z>"}`
-- Pipelines: succès <URL> | échec <URL>
+- Pipelines: succès https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45266744974 | échec https://github.com/Med-Slimen/toDoApp_CI-CD/actions/runs/45265592901
 
 ## 3. Déroulé du retour arrière
 
@@ -38,3 +38,4 @@
 - [ ] Protection de main (+1)
 - [x] Déploiement automatique sur tag (+2)
 - [x] Matrice de versions PHP 8.2 / 8.3 (+1)
+
