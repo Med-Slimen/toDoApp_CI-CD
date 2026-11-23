@@ -49,3 +49,13 @@ Or locally: `IMAGE_REPO=ghcr.io/<user>/todo-app ./scripts/deploy.sh v1.0.0`
 - `app`: application PHP (port 8000), routes `/health` et `/tasks`.
 - `db`: MySQL 8, accessible uniquement par le nom de service `db`, port non publié, données dans le volume `dbdata`.
 - CI: GitHub Actions teste le code puis construit l'image Docker à chaque pull request.
+
+## Docker
+
+Construire et lancer l'image seule (sans base de données):
+
+    docker build -t todo-app:1.0.0 .
+    docker run -d --name todo -p 8000:8000 todo-app:1.0.0
+    curl http://localhost:8000/health
+
+L'image respecte les bonnes pratiques: tag explicite (`php:8.3-cli-alpine`), utilisateur non root (`app`), `.dockerignore`, et `HEALTHCHECK` sur `/health`.
