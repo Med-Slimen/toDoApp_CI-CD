@@ -74,3 +74,17 @@ Application + base de données MySQL:
 - `app` démarre seulement quand `db` est `healthy`.
 
 Arrêter: `docker compose down` (garde les données). Tout effacer: `docker compose down -v`.
+
+## Interface web
+
+Après `docker compose up --build -d`, ouvrir http://localhost:8000 : on peut ajouter une tâche, la marquer comme faite et la supprimer. La version déployée est affichée en bas de la page (lue depuis `/health`).
+
+Routes de l'API:
+
+| Méthode | Chemin | Rôle |
+|---|---|---|
+| GET | `/tasks` | liste des tâches |
+| POST | `/tasks` | ajouter (champ `title`) |
+| POST | `/tasks/{id}/toggle` | basculer fait / non fait |
+| DELETE | `/tasks/{id}` | supprimer |
+| GET | `/health` | état et version |
